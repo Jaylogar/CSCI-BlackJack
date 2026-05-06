@@ -43,9 +43,9 @@ player1Score++; // this would add a point(+1) to the player1 score
 //scoreboard results
 cout << " CSCI 271 BlackJack Scoreboard"\n";
   cout << "Player 1 Score: "
-    << player1Score << endl; // shows player 1 score
+    << player1Score << endl;    // shows player 1 score
   cout << "Player 2 Score: "
-    << player2Score << endl; // shows player 2 score
+    << player2Score << endl;     // shows player 2 score
 }
 
 
