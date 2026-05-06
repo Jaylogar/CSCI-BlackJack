@@ -8,7 +8,7 @@ using namespace std;
 int card(){ // runs a game of blackjack and returns the final hand value of the player. Returns 0 if the player busts.
   srand(time(0));
   char cmenu =  ' ';
-  int cardTotal = 1;
+  int cardTotal = 0;
   int faceDown = drawcard();
   
   cout << "*****************\n";
