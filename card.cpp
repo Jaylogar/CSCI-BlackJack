@@ -20,30 +20,29 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   
   while(cmenu != 'S' && cmenu != 's') {
   
-  
-  
+    int draw = drawcard();
     switch(cmenu){
       case 'H': case 'h':
-        cout << "You drew a " << drawcard() << endl;
-        cardTotal += drawcard();
+        cout << "You drew a " << draw << endl;
+        cardTotal += draw;
         if(cardTotal >= 21){
           cout << "It's a Bust and you didnt even give the Face Down card a chance!" << endl;
           break;
         }
-        cout << "Your hand: **** + " << cardTotal << endl;
-        cout << endl;
-        cout << "*****************\n";
-        cout << "Press H to Hit.\n";
-        cout << "Press S to Stand.\n";
-        cout << "*****************\n";
+        
   
-        cin >> cmenu;
         break;
       default:
         cout << "Invalid input. Please try an actual input!" << endl;
         break;
     }
-  
+    cout << "Your hand: **** + " << cardTotal << endl;
+    cout << endl;
+    cout << "*****************\n";
+    cout << "Press H to Hit.\n";
+    cout << "Press S to Stand.\n";
+    cout << "*****************\n";
+    cin >> cmenu;
     
   }
   cout << "You chose to stand. " << endl;
