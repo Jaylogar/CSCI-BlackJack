@@ -21,6 +21,6 @@ Rule 3: First to 3 wins it all.
 When both players have folded, the player with the higher number, below or at 21, gains a point. The first player to reach 5 points wins the game.
 
 ## Who's Doing What
-Jean    <Card system>
-Jack    <Dealer + scoring>
-Eithan <Player actions>
+Jean    <Card System>
+Jack    <Player Actions>
+Eithan <Dealer + Scoring>
