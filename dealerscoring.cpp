@@ -25,8 +25,8 @@ cout << "Player 2 Results: "
   << player2Total << endl;
   
 // this will check if the rounds are tie. it happens when both player bust or even when both players scores are equal.
-if (player1Total == player2Total) { 
-cout << "Tie Round \n";
+if (player1Total == player2Total) { // checks if both players scores are equal, if its true then the round will be a draw round.
+cout << "Draw Round \n";
 }
 else if ( // This if for when the player 2 wins a round
   player1Total == 0 // its to check if player 1 bust because bust returns to 0, then it will show that player 2 automatically won.
