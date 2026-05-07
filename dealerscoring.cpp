@@ -1,5 +1,4 @@
 #include <iostream>
-#include "dealerscoring.h"
 
 using namespace std;
 
@@ -23,16 +22,12 @@ if (player1Total == player2Total) { // checks if both players scores are equal, 
   cout << "Draw Round \n";
   return 0;
 }
-else if (player2Total > player1Total) // this would check if player 2 has a higher score than player 1 
-   { // closes the condition(also it finished the If statement) and then starts a new block of code to see if the condition is  true and not false.
-  cout << "Player 2 HAS WON THE ROUND \n";
-  player2Score++; // this would add a point(+1) to the player2 score
+else if (player2Total > player1Total){ // this would check if player 2 has a higher score than player 1 
+  cout << "Player 2 HAS WON THE ROUND \n" << endl;
+  return 2;
 }
 else { // this is for when player 1 gets to win a round, if the previous condiitions aren't true then the player 1 will win the round.
-  cout << "Player 1 HAS WON THE ROUND \n";
-  player1Score++; // this would add a point(+1) to the player1 score
+  cout << "Player 1 HAS WON THE ROUND \n"<< endl;
+  return 1; 
 }
-
-
-  
-
+}

@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib> 
 #include <ctime>
-#include "drawcard.h"
 using namespace std;
 
 
@@ -9,7 +8,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   srand(time(0));
   char cmenu =  ' ';
   int cardTotal = 0;
-  int faceDown = 1 + rand() % 13;
+  int faceDown = 1 + rand() % 10;
   
   cout << "*****************\n";
   cout << "Press H to Hit.\n";
@@ -20,7 +19,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   
   while(cmenu != 'S' && cmenu != 's') {
   
-    int draw = 1 + rand() % 13;
+    int draw = 1 + rand() % 10;
     switch(cmenu){
       case 'H': case 'h':
         cout << "You drew a " << draw << endl;
@@ -43,6 +42,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
     cout << "Press S to Stand.\n";
     cout << "*****************\n";
     cin >> cmenu;
+    cout << endl;
     
   }
   cout << "You chose to stand. " << endl;
@@ -50,10 +50,12 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   
   if(cardTotal + faceDown > 21){
     cout << "It's a Bust!" << endl;
+    cout << endl;
     return 0;
   } 
   else {
     cout << "Your final hand is: " << cardTotal + faceDown << endl;
+    cout << endl;
   }
   return cardTotal + faceDown;
 }
