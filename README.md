@@ -15,7 +15,7 @@ Rule 1: You can draw as many numbers as you please, if you surpass 21 total you 
 
 Rule 2: If both players bust or have the same number of cards, this will result in a draw and you can play again.
 
-Rule 3: First to 5 wins it all.
+Rule 3: First to 3 wins it all.
 
 ## Scoring
 When both players have folded, the player with the higher number, below or at 21, gains a point. The first player to reach 5 points wins the game.

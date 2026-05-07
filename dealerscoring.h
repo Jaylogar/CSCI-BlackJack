@@ -3,11 +3,8 @@
 //it defines dealerscoring_H
 
 //void means that the function does not return a value 
-void determineWinner( // it will tell the program that "determineWinner" exists, a prototype/declaration.
-int player1Total,
-int player2Total,
-int &player1Score,
-int &player2Score
-);
+int determineWinner(int player1Total, int player2Total); // it will tell the program that "determineWinner" exists, a prototype/declaration.
+
+
 
 #endif // it basically ends ifndef, to work as a header protection so it cannot be duplicated multiple times.

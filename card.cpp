@@ -9,7 +9,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   srand(time(0));
   char cmenu =  ' ';
   int cardTotal = 0;
-  int faceDown = drawcard();
+  int faceDown = 1 + rand() % 13;
   
   cout << "*****************\n";
   cout << "Press H to Hit.\n";
@@ -20,7 +20,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   
   while(cmenu != 'S' && cmenu != 's') {
   
-    int draw = drawcard();
+    int draw = 1 + rand() % 13;
     switch(cmenu){
       case 'H': case 'h':
         cout << "You drew a " << draw << endl;
