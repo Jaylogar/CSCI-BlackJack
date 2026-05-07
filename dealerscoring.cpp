@@ -25,8 +25,7 @@ cout << "Player 2 Results: "
   << player2Total << endl;
   
 // this will check if the rounds are tie. it happens when both player bust or even when both players scores are equal.
-if ((player1Total == 0 && player2Total == 0)
-  || (player1Total == player2Total)) { // checks if both players have the same score, || means Or so its like "both players bust or the both players have the same score.
+if (player1Total == player2Total) { 
 cout << "Tie Round \n";
 }
 else if ( // This if for when the player 2 wins a round
@@ -41,7 +40,7 @@ else { // this is for when player 1 gets to win a round, if the previous condiit
 player1Score++; // this would add a point(+1) to the player1 score
 }
 //scoreboard results
-cout << " CSCI 271 BlackJack Scoreboard"\n";
+cout << " CSCI 271 BlackJack Scoreboard\n";
   cout << "Player 1 Score: "
     << player1Score << endl;    // shows player 1 score
   cout << "Player 2 Score: "
