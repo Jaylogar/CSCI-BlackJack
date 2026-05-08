@@ -8,7 +8,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   srand(time(0));
   char cmenu =  ' ';
   int cardTotal = 0;
-  int faceDown = 1 + rand() % 10;
+  int faceDown = 1 + rand() % 10; // this will generate a random number between 1 and 11 for the face down card.
   
   cout << "*****************\n";
   cout << "Press H to Hit.\n";
@@ -17,19 +17,17 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   
   cin >> cmenu;
   
-  while(cmenu != 'S' && cmenu != 's') {
+  while(cmenu != 'S' && cmenu != 's') { // this will keep the loop running until the player chooses s or S to stand.
   
-    int draw = 1 + rand() % 10;
-    switch(cmenu){
+    int draw = 1 + rand() % 10; // this will generate a random number between 1 and 11 for the card drawn.
+    switch(cmenu){ 
       case 'H': case 'h':
         cout << "You drew a " << draw << endl;
-        cardTotal += draw;
-        if(cardTotal >= 21){
+        cardTotal += draw; // adds the drawn card to the total card value.
+        if(cardTotal >= 21){ // this will check if the player pulled enough cards to automatically bust. 
           cout << "It's a Bust and you didnt even give the Face Down card a chance!" << endl;
           break;
         }
-        
-  
         break;
       default:
         cout << "Invalid input. Please try an actual input!" << endl;
@@ -48,7 +46,7 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
   cout << "You chose to stand. " << endl;
   cout << "Your hand: " << faceDown << " + " << cardTotal << endl;
   
-  if(cardTotal + faceDown > 21){
+  if(cardTotal + faceDown > 21){  // checks if the player busts after adding the face down card. 
     cout << "It's a Bust!" << endl;
     cout << endl;
     return 0;
@@ -57,5 +55,5 @@ int card(){ // runs a game of blackjack and returns the final hand value of the 
     cout << "Your final hand is: " << cardTotal + faceDown << endl;
     cout << endl;
   }
-  return cardTotal + faceDown;
+  return cardTotal + faceDown; // returns the final hand value of the player. 
 }

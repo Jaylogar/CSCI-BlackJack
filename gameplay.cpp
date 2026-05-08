@@ -43,7 +43,7 @@ void gameplay(){
   
   }
 
-  if(player2Score > player1Score){
+  if(player2Score > player1Score){   //comare the scores of player 1 and player 2 and lets the player with the highest score win the game. 
     cout << "Player 2 has won the game!" << endl;
   }
   else{
