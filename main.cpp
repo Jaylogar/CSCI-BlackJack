@@ -2,15 +2,11 @@
 #include <cstdlib> 
 #include <ctime>
 #include "card.h"
-<<<<<<< HEAD
-#include "drawcard.h"
 #include "dealerscoring.h"
+#include "gameplay.h"
 using namespace std;
 
 int main(){
-  int player1Score = 0;
-  int player2Score = 0;
-
   // ===============================
   // NEW MENU CODE STARTS HERE
   // ===============================
@@ -34,23 +30,9 @@ int main(){
 
         // when the player wants to play
 
-        cout << "\nWelcome to Blackjack! First to 5 wins!\n";
+        cout << "\nWelcome to Blackjack! First to 3 wins!\n";
 
-        while(player1Score < 5 && player2Score < 5) {
-          cout << "\n=== Player 1's Turn ===\n";
-          int p1 = card();
-
-          cout << "\n=== Player 2's Turn ===\n";
-          int p2 = card();
-
-          determineWinner(p1, p2, player1Score, player2Score);
-
-          if(player1Score >= 5) {
-            cout << "\n*** Player 1 wins the game! ***\n";
-          } else if(player2Score >= 5) {
-            cout << "\n*** Player 2 wins the game! ***\n";
-          }
-        }
+        gameplay();
 
         // for when the player wants to know what it the game is about
 
