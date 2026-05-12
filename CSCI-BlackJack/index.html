@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blackjack</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #1a4731;
+      font-family: 'Segoe UI', sans-serif;
+      color: #f0e6d3;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #app {
+      width: 100%;
+      max-width: 700px;
+      padding: 20px;
+    }
+
+    /* ── SCREENS ─────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ── MENU ────────────────────────────────── */
+    #menu-screen {
+      text-align: center;
+    }
+
+    .title-box {
+      border: 3px solid #c9a84c;
+      border-radius: 12px;
+      padding: 30px 40px;
+      display: inline-block;
+      background: rgba(0,0,0,0.35);
+      min-width: 320px;
+    }
+
+    .title-box h1 {
+      font-size: 2.8rem;
+      letter-spacing: 6px;
+      color: #c9a84c;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+      margin-bottom: 8px;
+    }
+
+    .title-box .suit-row {
+      font-size: 1.6rem;
+      margin-bottom: 24px;
+      color: #c9a84c;
+    }
+
+    .menu-btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      margin: 10px 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      border: 2px solid #c9a84c;
+      border-radius: 8px;
+      background: transparent;
+      color: #f0e6d3;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .menu-btn:hover {
+      background: #c9a84c;
+      color: #1a4731;
+    }
+
+    /* ── INFO SCREENS ────────────────────────── */
+    .info-box {
+      background: rgba(0,0,0,0.4);
+      border: 2px solid #c9a84c;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .info-box h2 {
+      color: #c9a84c;
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      letter-spacing: 3px;
+    }
+
+    .info-box p {
+      line-height: 1.8;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .back-btn {
+      margin-top: 24px;
+      padding: 12px 32px;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      border: 2px solid #c9a84c;
+      border-radius: 8px;
+      background: transparent;
+      color: #f0e6d3;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .back-btn:hover {
+      background: #c9a84c;
+      color: #1a4731;
+    }
+
+    /* ── GAME SCREEN ─────────────────────────── */
+    #game-screen h2 {
+      text-align: center;
+      color: #c9a84c;
+      letter-spacing: 3px;
+      margin-bottom: 6px;
+      font-size: 1.3rem;
+    }
+
+    .scoreboard {
+      display: flex;
+      justify-content: space-around;
+      background: rgba(0,0,0,0.4);
+      border: 2px solid #c9a84c;
+      border-radius: 10px;
+      padding: 12px 20px;
+      margin-bottom: 18px;
+      font-size: 1.1rem;
+    }
+
+    .score-item span {
+      color: #c9a84c;
+      font-weight: 700;
+      font-size: 1.4rem;
+    }
+
+    .turn-banner {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #c9a84c;
+      margin-bottom: 14px;
+      letter-spacing: 2px;
+    }
+
+    .card-area {
+      background: rgba(0,0,0,0.35);
+      border: 2px solid #555;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 16px;
+      min-height: 160px;
+    }
+
+    .card-area h3 {
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      color: #aaa;
+      margin-bottom: 12px;
+    }
+
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: flex-end;
+      min-height: 90px;
+    }
+
+    .card {
+      width: 60px;
+      height: 86px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      font-weight: 700;
+      box-shadow: 2px 3px 8px rgba(0,0,0,0.5);
+      flex-shrink: 0;
+    }
+
+    .card.face-up {
+      background: #fff;
+      color: #222;
+    }
+
+    .card.face-down {
+      background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+      color: transparent;
+      font-size: 0;
+    }
+
+    .card-total {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    .card-total strong {
+      color: #f0e6d3;
+      font-size: 1.2rem;
+    }
+
+    .bust-label {
+      color: #e55;
+      font-size: 1rem;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .action-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .action-btn {
+      padding: 14px 36px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      border: 2px solid #c9a84c;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.3);
+      color: #f0e6d3;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .action-btn:hover:not(:disabled) {
+      background: #c9a84c;
+      color: #1a4731;
+    }
+
+    .action-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .action-btn.green {
+      border-color: #4caf50;
+    }
+    .action-btn.green:hover:not(:disabled) {
+      background: #4caf50;
+      color: #fff;
+    }
+
+    /* ── LOG ─────────────────────────────────── */
+    .log-box {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid #444;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      color: #ccc;
+      max-height: 130px;
+      overflow-y: auto;
+      line-height: 1.6;
+    }
+
+    .log-box .log-line { margin: 2px 0; }
+    .log-box .log-win  { color: #c9a84c; font-weight: 700; }
+    .log-box .log-bust { color: #e55; }
+    .log-box .log-info { color: #adf; }
+
+    /* ── RESULT OVERLAY ──────────────────────── */
+    #result-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    #result-overlay.active {
+      display: flex;
+    }
+
+    .result-box {
+      background: #1a4731;
+      border: 3px solid #c9a84c;
+      border-radius: 16px;
+      padding: 40px 50px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    .result-box h2 {
+      color: #c9a84c;
+      font-size: 2rem;
+      letter-spacing: 4px;
+      margin-bottom: 12px;
+    }
+
+    .result-box p {
+      font-size: 1.1rem;
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    .result-box .result-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── ROUND RESULT ────────────────────────── */
+    .round-result-bar {
+      text-align: center;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      display: none;
+    }
+
+    .round-result-bar.show { display: block; }
+    .round-result-bar.p1   { background: rgba(76,175,80,0.25); color: #7dce82; border: 1px solid #4caf50; }
+    .round-result-bar.p2   { background: rgba(33,150,243,0.25); color: #7dc3f7; border: 1px solid #2196f3; }
+    .round-result-bar.draw { background: rgba(200,200,200,0.15); color: #ccc; border: 1px solid #888; }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ── MENU SCREEN ── -->
+  <div id="menu-screen" class="screen active">
+    <div style="text-align:center">
+      <div class="title-box">
+        <div class="suit-row">♠ ♥ ♦ ♣</div>
+        <h1>BLACKJACK</h1>
+        <div style="color:#888;font-size:0.85rem;letter-spacing:2px;margin-bottom:28px;">CSCI 271 EDITION</div>
+        <button class="menu-btn" onclick="showScreen('game-screen'); startGame()">▶ PLAY</button>
+        <button class="menu-btn" onclick="showScreen('about-screen')">ℹ ABOUT</button>
+        <button class="menu-btn" onclick="showScreen('rules-screen')">📋 RULES</button>
+        <button class="menu-btn" onclick="quitGame()">✕ QUIT</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ABOUT SCREEN ── -->
+  <div id="about-screen" class="screen">
+    <div class="info-box">
+      <h2>ABOUT</h2>
+      <p>This is a Blackjack game built in C++,<br>by Jean, Ethan, and Jack.</p>
+      <p style="color:#aaa;font-size:0.9rem;margin-top:8px;">Web interface powered by vanilla JavaScript.</p>
+      <button class="back-btn" onclick="showScreen('menu-screen')">← BACK</button>
+    </div>
+  </div>
+
+  <!-- ── RULES SCREEN ── -->
+  <div id="rules-screen" class="screen">
+    <div class="info-box">
+      <h2>GAME RULES</h2>
+      <p>Player 1 and Player 2 take turns playing Blackjack.</p>
+      <p>The player closer to <strong>21</strong> without busting wins the round.</p>
+      <p>Each player has a face-down card revealed only when they Stand.</p>
+      <p>First player to <strong>3 points</strong> wins the game.</p>
+      <p style="color:#aaa;font-size:0.9rem;margin-top:12px;">If both bust or tie, the round is a Draw.</p>
+      <button class="back-btn" onclick="showScreen('menu-screen')">← BACK</button>
+    </div>
+  </div>
+
+  <!-- ── GAME SCREEN ── -->
+  <div id="game-screen" class="screen">
+    <h2>♠ BLACKJACK ♥</h2>
+
+    <div class="scoreboard">
+      <div class="score-item">🧑 Player 1 &nbsp; <span id="p1-score">0</span></div>
+      <div class="score-item" style="color:#aaa;font-size:0.9rem;align-self:center">First to 3</div>
+      <div class="score-item">Player 2 🧑 &nbsp; <span id="p2-score">0</span></div>
+    </div>
+
+    <div class="turn-banner" id="turn-banner">Player 1's Turn</div>
+
+    <!-- Card area -->
+    <div class="card-area">
+      <h3>YOUR HAND</h3>
+      <div class="cards-row" id="cards-row"></div>
+      <div class="card-total" id="card-total-display"></div>
+      <div class="bust-label" id="bust-label" style="display:none">BUST!</div>
+    </div>
+
+    <!-- Round result bar -->
+    <div class="round-result-bar" id="round-result-bar"></div>
+
+    <!-- Buttons -->
+    <div class="action-btns">
+      <button class="action-btn" id="btn-hit"   onclick="hit()">HIT</button>
+      <button class="action-btn green" id="btn-stand" onclick="stand()">STAND</button>
+      <button class="action-btn" id="btn-next"  onclick="nextTurn()" style="display:none">NEXT →</button>
+    </div>
+
+    <!-- Log -->
+    <div class="log-box" id="log-box"></div>
+  </div>
+
+</div>
+
+<!-- ── RESULT OVERLAY ── -->
+<div id="result-overlay">
+  <div class="result-box">
+    <h2 id="overlay-title">GAME OVER</h2>
+    <p id="overlay-body"></p>
+    <div class="result-btns">
+      <button class="action-btn green" onclick="startGame(); hideOverlay()">PLAY AGAIN</button>
+      <button class="action-btn" onclick="showScreen('menu-screen'); hideOverlay()">MENU</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────────────────────
+let p1Score = 0, p2Score = 0;
+let currentPlayer = 1;          // 1 or 2
+let faceDownCard = 0;
+let visibleTotal = 0;           // sum of hit cards (face-up)
+let playerStood = false;        // has current player stood?
+let p1RoundResult = 0;          // final score this round (0 = bust)
+let waitingForP2 = false;       // after P1 stands, waiting to start P2
+
+// ─── Utility ─────────────────────────────────────────────────────────────────
+function randCard() { return 1 + Math.floor(Math.random() * 10); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function hideOverlay() {
+  document.getElementById('result-overlay').classList.remove('active');
+}
+
+function log(msg, cls = '') {
+  const box = document.getElementById('log-box');
+  const line = document.createElement('div');
+  line.className = 'log-line' + (cls ? ' ' + cls : '');
+  line.textContent = msg;
+  box.appendChild(line);
+  box.scrollTop = box.scrollHeight;
+}
+
+function clearLog() { document.getElementById('log-box').innerHTML = ''; }
+
+function updateScoreboard() {
+  document.getElementById('p1-score').textContent = p1Score;
+  document.getElementById('p2-score').textContent = p2Score;
+}
+
+function renderCards(cards, faceDownShown) {
+  const row = document.getElementById('cards-row');
+  row.innerHTML = '';
+
+  // Face-down card
+  const fd = document.createElement('div');
+  if (faceDownShown) {
+    fd.className = 'card face-up';
+    fd.textContent = faceDownCard;
+  } else {
+    fd.className = 'card face-down';
+  }
+  row.appendChild(fd);
+
+  // Face-up cards
+  cards.forEach(v => {
+    const c = document.createElement('div');
+    c.className = 'card face-up';
+    c.textContent = v;
+    row.appendChild(c);
+  });
+}
+
+function setButtons(hitEnabled, standEnabled, showNext) {
+  document.getElementById('btn-hit').disabled   = !hitEnabled;
+  document.getElementById('btn-stand').disabled = !standEnabled;
+  document.getElementById('btn-next').style.display = showNext ? 'inline-block' : 'none';
+}
+
+function showRoundResult(cls, msg) {
+  const bar = document.getElementById('round-result-bar');
+  bar.className = 'round-result-bar show ' + cls;
+  bar.textContent = msg;
+}
+
+function hideRoundResult() {
+  const bar = document.getElementById('round-result-bar');
+  bar.className = 'round-result-bar';
+}
+
+// ─── Game flow ────────────────────────────────────────────────────────────────
+let hitCards = [];  // face-up cards drawn this turn
+
+function startGame() {
+  p1Score = 0;
+  p2Score = 0;
+  currentPlayer = 1;
+  clearLog();
+  hideRoundResult();
+  updateScoreboard();
+  log('Welcome to Blackjack! First to 3 wins!', 'log-info');
+  beginTurn();
+}
+
+function beginTurn() {
+  faceDownCard = randCard();
+  visibleTotal = 0;
+  hitCards     = [];
+  playerStood  = false;
+
+  document.getElementById('turn-banner').textContent = `Player ${currentPlayer}'s Turn`;
+  document.getElementById('bust-label').style.display = 'none';
+  document.getElementById('card-total-display').innerHTML = 'Your hand: <strong>????</strong> + <strong>0</strong>';
+  hideRoundResult();
+
+  renderCards(hitCards, false);
+  setButtons(true, true, false);
+
+  log(`── Player ${currentPlayer}'s turn ──`, 'log-info');
+  log('Press HIT to draw a card.');
+}
+
+function hit() {
+  if (playerStood) return;
+
+  const draw = randCard();
+  hitCards.push(draw);
+  visibleTotal += draw;
+
+  log(`You drew a ${draw}`);
+
+  renderCards(hitCards, false);
+  document.getElementById('card-total-display').innerHTML =
+    `Your hand: <strong>????</strong> + <strong>${visibleTotal}</strong>`;
+
+  if (visibleTotal >= 21) {
+    // Auto-bust before even revealing face-down
+    log("It's a Bust and you didn't even give the Face Down card a chance!", 'log-bust');
+    document.getElementById('bust-label').style.display = 'block';
+    finishTurn(0);
+  }
+}
+
+function stand() {
+  if (playerStood) return;
+  playerStood = true;
+
+  log('You chose to stand.');
+  log(`Your hand: ${faceDownCard} + ${visibleTotal}`);
+
+  const total = faceDownCard + visibleTotal;
+  renderCards(hitCards, true);
+
+  if (total > 21) {
+    log("It's a Bust!", 'log-bust');
+    document.getElementById('bust-label').style.display = 'block';
+    document.getElementById('card-total-display').innerHTML =
+      `Your hand: <strong>${faceDownCard}</strong> + <strong>${visibleTotal}</strong> = <strong>BUST</strong>`;
+    finishTurn(0);
+  } else {
+    log(`Your final hand is: ${total}`);
+    document.getElementById('card-total-display').innerHTML =
+      `Your hand: <strong>${faceDownCard}</strong> + <strong>${visibleTotal}</strong> = <strong>${total}</strong>`;
+    finishTurn(total);
+  }
+}
+
+function finishTurn(finalScore) {
+  setButtons(false, false, false);
+
+  if (currentPlayer === 1) {
+    p1RoundResult = finalScore;
+    // Now start Player 2's turn
+    log('');
+    setButtons(false, false, true);
+    document.getElementById('btn-next').textContent = 'Player 2 → START';
+    document.getElementById('btn-next').style.display = 'inline-block';
+    waitingForP2 = true;
+  } else {
+    // Both players done — determine winner
+    const p2RoundResult = finalScore;
+    resolveRound(p1RoundResult, p2RoundResult);
+  }
+}
+
+function nextTurn() {
+  if (waitingForP2) {
+    waitingForP2 = false;
+    currentPlayer = 2;
+    document.getElementById('btn-next').style.display = 'none';
+    beginTurn();
+  } else {
+    // Start next round
+    currentPlayer = 1;
+    beginTurn();
+  }
+}
+
+function resolveRound(p1Final, p2Final) {
+  log('');
+  log('── Round Results ──', 'log-info');
+  log(`Player 1: ${p1Final === 0 ? 'BUST' : p1Final}`);
+  log(`Player 2: ${p2Final === 0 ? 'BUST' : p2Final}`);
+
+  let winner;
+  if (p1Final === p2Final) {
+    winner = 0;
+    log('Draw Round');
+    showRoundResult('draw', 'Draw Round');
+  } else if (p2Final > p1Final) {
+    winner = 2;
+    p2Score++;
+    log('Player 2 HAS WON THE ROUND', 'log-win');
+    showRoundResult('p2', '🏆 Player 2 Wins the Round!');
+  } else {
+    winner = 1;
+    p1Score++;
+    log('Player 1 HAS WON THE ROUND', 'log-win');
+    showRoundResult('p1', '🏆 Player 1 Wins the Round!');
+  }
+
+  updateScoreboard();
+  log(`Scoreboard → P1: ${p1Score}  |  P2: ${p2Score}`);
+
+  // Check game over
+  if (p1Score >= 3 || p2Score >= 3) {
+    const gameWinner = p1Score >= 3 ? 'Player 1' : 'Player 2';
+    setTimeout(() => showGameOver(gameWinner), 900);
+    return;
+  }
+
+  // Next round
+  setButtons(false, false, true);
+  document.getElementById('btn-next').textContent = 'Next Round →';
+  document.getElementById('btn-next').style.display = 'inline-block';
+  waitingForP2 = false;
+  currentPlayer = 1;
+}
+
+function showGameOver(winner) {
+  document.getElementById('overlay-title').textContent = winner + ' WINS!';
+  document.getElementById('overlay-body').innerHTML =
+    `Congratulations, <strong>${winner}</strong>!<br>` +
+    `Final Score: Player 1 — ${p1Score} &nbsp;|&nbsp; Player 2 — ${p2Score}`;
+  document.getElementById('result-overlay').classList.add('active');
+}
+
+function quitGame() {
+  if (confirm('Thanks for playing! Are you sure you want to quit?')) {
+    document.body.innerHTML = '<div style="text-align:center;margin-top:20vh;font-size:1.5rem;color:#c9a84c;">Thanks for playing! ♠</div>';
+  }
+}
+</script>
+</body>
+</html>
